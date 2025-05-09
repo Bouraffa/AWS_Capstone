@@ -10,7 +10,7 @@ resource "aws_vpc" "default" {
 
 # Create Internet Gateway
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.default.id
 
   tags = {
     Name = "igw ${var.tagNameDate}"
@@ -20,7 +20,7 @@ resource "aws_internet_gateway" "igw" {
 # Create Public Subnets
 resource "aws_subnet" "public" {
   count                   = length(var.public_subnet_cidr_blocks)
-  vpc_id                  = aws_vpc.vpc.id
+  vpc_id                  = aws_vpc.default.id
   cidr_block              = var.public_subnet_cidr_blocks[count.index]
   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = true
@@ -34,7 +34,7 @@ resource "aws_subnet" "public" {
 # Create Private Subnets
 resource "aws_subnet" "private" {
   count             = length(var.private_subnet_cidr_blocks)
-  vpc_id            = aws_vpc.vpc.id
+  vpc_id            = aws_vpc.default.id
   cidr_block        = var.private_subnet_cidr_blocks[count.index]
   availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
 
@@ -45,7 +45,7 @@ resource "aws_subnet" "private" {
 
 # Create Route Tables
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.default.id
 
   route {
     cidr_block = var.cidr_blocks[0]
@@ -59,7 +59,7 @@ resource "aws_route_table" "public" {
 
 resource "aws_route_table" "private" {
   count  = length(var.availability_zones)
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.default.id
 
   tags = {
     Name = "Private_Route_Table ${var.tagNameDate}_${count.index + 1}"
