@@ -3,7 +3,7 @@ resource "aws_security_group" "rds_mysql" {
   name        = "rds_mysql_sg"
   description = "Security group for RDS database"
 
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.capstone.id
 
   ingress {
     from_port   = 3306
@@ -28,7 +28,7 @@ resource "aws_security_group" "wordpress_sg" {
   name        = "wordpress_sg"
   description = "Security group for WordPress instance"
 
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.capstone.id
 
   ingress {
     description = "SSH"

@@ -32,7 +32,7 @@ resource "aws_instance" "wordpress_instance" {
 }
 
 data "template_file" "userdataEC" {
- template = file("UserDataEC2.sh")
+ template = file("userdata.sh")
 
  # vars = {
     #rds_endpoint = replace("${data.aws_db_instance.mysql_data.endpoint}", ":3306", "")
