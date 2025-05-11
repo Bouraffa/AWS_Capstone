@@ -11,6 +11,6 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_alarm" {
   actions_enabled     = false
 
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.wordpress_asg.name
+    InstanceId = aws_instance.wordpress_instance.id
   }
 }

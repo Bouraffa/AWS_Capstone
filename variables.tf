@@ -9,9 +9,10 @@ variable "vpc_cidr" {
 variable "subnet_cidr" {
   default = "10.0.1.0/24"
 }
-
-variable "instance_type" {
-  default = "t2.micro"
+# EC2 Variables
+variable "ec2_instance_type" {
+  description = "Type of EC2 instance"
+  default     = "t2.micro"
 }
 
 variable "key_name" {
@@ -43,8 +44,37 @@ variable "private_subnet_cidr_blocks" {
   default     = ["10.0.0.128/26", "10.0.0.192/26"] # Adjust as needed
 }
 
-# EC2 Variables
-variable "ec2_instance_type" {
-  description = "EC2 instance type"
-  default     = "t2.micro"
+# Variables for RDS DB instance
+
+variable "rds_username" {
+  description = "The username for the RDS instance"
+}
+variable "rds_password" {
+  description = "The password for the RDS instance"
+  sensitive   = true
+}
+variable "rds_db_name" {
+  description = "The name of the database"
+  default     = "wordpressDb"
+}
+
+# SNS email id variable
+variable "EMAIL_ID" {
+  description = "SNS email id"
+}
+# Role
+variable "LabRoleARN" {
+  description = "Lab Role"
+  default     = "arn:aws:iam::891377082491:role/LabRole"
+}
+
+variable "tagNameDate" {
+  default = "2024-04-12"
+}
+
+
+#S3 bucket Name
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket"
+  default     = "s3-bucket"
 }

@@ -1,19 +1,48 @@
-resource "aws_db_subnet_group" "rds_subnet_group" {
-  name       = "rds-subnet-group"
-  subnet_ids = aws_subnet.private[*].id
+
+# Create RDS Database
+#creating DB Subnet Group
+resource "aws_db_subnet_group" "private" {
+  name       = "private_group"
+  subnet_ids = [aws_subnet.private[0].id, aws_subnet.private[1].id]
+
+  tags = {
+    Name = "Private_Group ${var.tagNameDate}"
+  }
 }
 
-resource "aws_db_instance" "wordpress_db" {
-  allocated_storage       = 20
-  engine                  = "mysql"
-  engine_version          = "8.0"
-  instance_class          = "db.t3.micro"
-  name                    = var.db_name
-  username                = var.db_username
-  password                = var.db_password
-  db_subnet_group_name    = aws_db_subnet_group.rds_subnet_group.name
-  vpc_security_group_ids  = [aws_security_group.rds_sg.id]
-  skip_final_snapshot     = true
-  publicly_accessible     = false
-  multi_az                = false
+resource "aws_db_instance" "mysql" {
+  allocated_storage      = "10"
+  db_name                = var.rds_db_name
+  engine                 = "mysql"
+  engine_version         = "8.0.35"
+  instance_class         = "db.t3.micro"
+  identifier             = "rds-db"
+  username               = var.rds_username
+  password               = var.rds_password
+  skip_final_snapshot    = true
+  multi_az               = false
+  storage_encrypted      = false
+  vpc_security_group_ids = [aws_security_group.rds_mysql.id]
+  db_subnet_group_name   = aws_db_subnet_group.private.name #Associate private subnet to db instance
+
+  tags = {
+    Name = "rds_db ${var.tagNameDate}"
+  }
+}
+data "aws_db_instance" "mysql_data" {
+  db_instance_identifier = aws_db_instance.mysql.identifier
+}
+#Get Database name, username, password, endpoint from above RDS
+output "rds_db_name" {
+  value = data.aws_db_instance.mysql_data.db_name
+}
+output "rds_username" {
+  value = var.rds_username
+}
+output "rds_passwordword" {
+  value     = var.rds_password
+  sensitive = true
+}
+output "rds_endpoint" {
+  value = data.aws_db_instance.mysql_data.endpoint
 }
