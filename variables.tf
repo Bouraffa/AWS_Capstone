@@ -48,10 +48,12 @@ variable "private_subnet_cidr_blocks" {
 
 variable "rds_username" {
   description = "The username for the RDS instance"
+  default     = "admin"
 }
 variable "rds_password" {
   description = "The password for the RDS instance"
   sensitive   = true
+  default     = ""
 }
 variable "rds_db_name" {
   description = "The name of the database"
@@ -61,6 +63,7 @@ variable "rds_db_name" {
 # SNS email id variable
 variable "EMAIL_ID" {
   description = "SNS email id"
+  default     = "aymen.bouraffa@gmail.com"
 }
 # Role
 variable "LabRoleARN" {
