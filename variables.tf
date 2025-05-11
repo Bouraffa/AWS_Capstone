@@ -53,7 +53,7 @@ variable "rds_username" {
 variable "rds_password" {
   description = "The password for the RDS instance"
   sensitive   = true
-  default     = ""
+  default     = "SecurePass123"
 }
 variable "rds_db_name" {
   description = "The name of the database"
